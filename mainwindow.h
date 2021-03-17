@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "speaker.h"
+
 #include <QMainWindow>
 #include <QPushButton>
 
@@ -18,11 +20,16 @@ public:
     int EvaluateExpression(int firstNum, int secondNum, char operation);
     int OptimalFontSize();
     void ButtonClick();
+    void SpeakDone();
+    QPixmap ButtonLabel(QString expression, QString result, bool highlight);
 
 
+    int SentenceDelay;
     int FirstNum;
     char Operation;
     QList<QPushButton*> ButtonList;
+    Speaker *speaker;
+
 
 private:
     Ui::MainWindow *ui;

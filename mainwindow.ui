@@ -14,6 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
@@ -23,7 +26,11 @@
       <height>601</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout"/>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+    </layout>
    </widget>
   </widget>
  </widget>
