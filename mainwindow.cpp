@@ -52,7 +52,7 @@ void MainWindow::GenerateNumberButtons()
         // set style
         button->setFlat(true);
         QFont font = button->font();
-        font.setPixelSize(this->OptimalFontSize()/5);
+        font.setPixelSize(this->OptimalFontSize()/2);
         button->setFont(font);
 
 
@@ -79,7 +79,7 @@ void MainWindow::GenerateNumberButtons()
         // set style
         button->setFlat(true);
         QFont font = button->font();
-        font.setPixelSize(this->OptimalFontSize()/5);
+        font.setPixelSize(this->OptimalFontSize()/2);
         button->setFont(font);
 
         // connect signal-slot
