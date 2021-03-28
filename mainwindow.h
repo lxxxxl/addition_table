@@ -18,8 +18,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     int EvaluateExpression(int firstNum, int secondNum, char operation);
+    void GenerateExpressionButtons();
+    void GenerateNumberButtons();
     int OptimalFontSize();
-    void ButtonClick();
+    void ButtonClickExpression();
+    void ButtonClickNum();
     void SpeakDone();
     QPixmap ButtonLabel(QString expression, QString result, bool highlight);
 
@@ -27,7 +30,8 @@ public:
     int SentenceDelay;
     int FirstNum;
     char Operation;
-    QList<QPushButton*> ButtonList;
+    QList<QPushButton*> ButtonListExpressions;
+    QList<QPushButton*> ButtonListNums;
     Speaker *speaker;
 
 

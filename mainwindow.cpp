@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->speaker = new Speaker();
     this->FirstNum = 1;
     this->Operation = '+';
-    this->SentenceDelay = 5000;
+    this->SentenceDelay = 3000;
     connect(this->speaker, &Speaker::SpeakDone, this, &MainWindow::SpeakDone);
 
     ui->setupUi(this);
@@ -25,14 +25,89 @@ MainWindow::MainWindow(QWidget *parent)
     // setup scrollable UI
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setWidget(ui->verticalLayoutWidget);
-    scrollArea->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
+    //scrollArea->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOn );
     scrollArea->setWidgetResizable(true);
     this->setCentralWidget(scrollArea);
     QScroller::grabGesture(scrollArea, QScroller::TouchGesture);
 
+    GenerateNumberButtons();
+    GenerateExpressionButtons();
+
+}
+
+void MainWindow::GenerateNumberButtons()
+{
+
+
+    QHBoxLayout *layout1 = new QHBoxLayout();
+    ui->verticalLayout->addLayout(layout1);
+    for (int i = 1; i <= 5; i++)
+    {
+        QPushButton *button = new QPushButton(QString::number(i));
+
+        // set properties
+        button->setProperty("num", i);
+        button->setProperty("hilighted", false);
+
+        // set style
+        button->setFlat(true);
+        QFont font = button->font();
+        font.setPixelSize(this->OptimalFontSize()/5);
+        button->setFont(font);
+
+
+        // connect signal-slot
+        connect(button, &QPushButton::released, this, &MainWindow::ButtonClickNum);
+
+
+        // add button to UI
+        layout1->addWidget(button);
+        this->ButtonListNums.append(button);
+    }
+
+    QHBoxLayout *layout2 = new QHBoxLayout();
+    ui->verticalLayout->addLayout(layout2);
+    for (int i = 6; i <= 10; i++)
+    {
+
+        QPushButton *button = new QPushButton(QString::number(i));
+
+        // set properties
+        button->setProperty("num", i);
+        button->setProperty("hilighted", false);
+
+        // set style
+        button->setFlat(true);
+        QFont font = button->font();
+        font.setPixelSize(this->OptimalFontSize()/5);
+        button->setFont(font);
+
+        // connect signal-slot
+        connect(button, &QPushButton::released, this, &MainWindow::ButtonClickNum);
+
+
+        // add button to UI
+        layout2->addWidget(button);
+        this->ButtonListNums.append(button);
+    }
+
+
+}
+
+void MainWindow::GenerateExpressionButtons()
+{
     for (int i = 1; i < 10; i++)
     {
-        QPushButton *button = new QPushButton(this);
+        QPushButton *button;
+        if (this->ButtonListExpressions.count() < i) {
+             button = new QPushButton(this);
+
+            // add button to UI
+            ui->verticalLayout->addWidget(button);
+            this->ButtonListExpressions.append(button);
+        }
+        else
+            button = this->ButtonListExpressions.at(i - 1);
 
 
         // set text
@@ -55,17 +130,8 @@ MainWindow::MainWindow(QWidget *parent)
         button->setFlat(true);
 
         // connect signal-slot
-        connect(button, &QPushButton::released, this, &MainWindow::ButtonClick);
-
-
-        // add button to UI
-        ui->verticalLayout->addWidget(button);
-        this->ButtonList.append(button);
+        connect(button, &QPushButton::released, this, &MainWindow::ButtonClickExpression);
     }
-
-
-
-
 }
 
 
@@ -116,10 +182,10 @@ int MainWindow::OptimalFontSize()
     return qMin(width,height)/5;
 }
 
-void MainWindow::ButtonClick()
+void MainWindow::ButtonClickExpression()
 {
     QPushButton *sender = (QPushButton*)QObject::sender();
-    foreach (QPushButton* button, this->ButtonList)
+    foreach (QPushButton* button, this->ButtonListExpressions)
     {
         if (sender != button)
             button->setEnabled(false);
@@ -143,7 +209,7 @@ void MainWindow::ButtonClick()
 void MainWindow::SpeakDone()
 {
 
-    foreach (QPushButton* button, this->ButtonList)
+    foreach (QPushButton* button, this->ButtonListExpressions)
     {
         button->setEnabled(true);
         if (button->property("hilighted").toBool()){
@@ -155,4 +221,29 @@ void MainWindow::SpeakDone()
         }
 
     }
+}
+
+void MainWindow::ButtonClickNum()
+{
+    QPushButton *sender = (QPushButton*)QObject::sender();
+    foreach (QPushButton* button, this->ButtonListNums)
+    {
+        if (sender != button){
+            button->setProperty("highlited", false);
+            QFont font = button->font();
+            font.setBold(false);
+            button->setFont(font);
+        }
+    }
+
+    sender->setProperty("highlited", true);
+    QFont font = sender->font();
+    font.setBold(true);
+    sender->setFont(font);
+
+    this->FirstNum = sender->property("num").toInt();
+    GenerateExpressionButtons();
+
+
+
 }
