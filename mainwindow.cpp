@@ -35,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+/*
+ * Generates buttons with numbers
+ **/
 void MainWindow::GenerateNumberButtons()
 {
 
@@ -94,6 +97,9 @@ void MainWindow::GenerateNumberButtons()
 
 }
 
+/*
+ * Generates buttons with expressions
+ **/
 void MainWindow::GenerateExpressionButtons()
 {
     for (int i = 1; i < 10; i++)
@@ -134,12 +140,20 @@ void MainWindow::GenerateExpressionButtons()
     }
 }
 
-
+/*
+ * Main window destructor
+ **/
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+/*
+ * Generates button label
+ * @param expression for which this button is used
+ * @param result of expression
+ * @param highlight used when button was selected
+ **/
 QPixmap MainWindow::ButtonLabel(QString expression, QString result, bool highlight){
     QTextDocument doc;
     QString html;
@@ -162,7 +176,12 @@ QPixmap MainWindow::ButtonLabel(QString expression, QString result, bool highlig
     return pixmap;
 }
 
-
+/*
+ * Evaluates arithmetic expression
+ * @param firstNum first number in expression
+ * @param secondNum second number in expression
+ * @param operation arithmetic operation
+ **/
 int MainWindow::EvaluateExpression(int firstNum, int secondNum, char operation)
 {
     switch (operation){
@@ -173,6 +192,9 @@ int MainWindow::EvaluateExpression(int firstNum, int secondNum, char operation)
     }
 }
 
+/*
+ * Get optimal font size according to screen resolution
+ **/
 int MainWindow::OptimalFontSize()
 {
     QScreen *screen = QApplication::screens().at(0);
@@ -182,6 +204,9 @@ int MainWindow::OptimalFontSize()
     return qMin(width,height)/5;
 }
 
+/*
+ * Slot for processing clicks on Expression buttons
+ **/
 void MainWindow::ButtonClickExpression()
 {
     QPushButton *sender = (QPushButton*)QObject::sender();
@@ -206,6 +231,9 @@ void MainWindow::ButtonClickExpression()
     this->speaker->SpeakWithDelay(firstSentence, secondSEntence, this->SentenceDelay);
 }
 
+/*
+ * Slot for processing end of speech synthesis
+ **/
 void MainWindow::SpeakDone()
 {
 
@@ -223,6 +251,9 @@ void MainWindow::SpeakDone()
     }
 }
 
+/*
+ * Slot for processing clicks on Number buttons
+ **/
 void MainWindow::ButtonClickNum()
 {
     QPushButton *sender = (QPushButton*)QObject::sender();
@@ -243,7 +274,4 @@ void MainWindow::ButtonClickNum()
 
     this->FirstNum = sender->property("num").toInt();
     GenerateExpressionButtons();
-
-
-
 }

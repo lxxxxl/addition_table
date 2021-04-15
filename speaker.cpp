@@ -9,13 +9,19 @@ Speaker::Speaker()
     this->SecondSentence ="";
     this->Timer.setSingleShot(true);
 }
-
-void Speaker::SpeakWithDelay(QString FirstSentence, QString secondSentence, int delay)
+/*
+ * Speak 2 sentences with specified delay
+ * @param firstSentence first sentence to speak
+ * @param secondSentence second sentence to speak
+ * @param delay between sentences
+ *
+ **/
+void Speaker::SpeakWithDelay(QString firstSentence, QString secondSentence, int delay)
 {
     if (this->SpeakerState != Speaker::Idle)
         return;
 
-    this->FirstSentence = FirstSentence;
+    this->FirstSentence = firstSentence;
     this->SecondSentence = secondSentence;
     this->Delay = delay;
 
@@ -23,6 +29,11 @@ void Speaker::SpeakWithDelay(QString FirstSentence, QString secondSentence, int 
     this->say(this->FirstSentence);
 }
 
+/*
+ * Overrides QTextToSpeech StateChanged method
+ * emits SpeakDone on end of speak or SpeakError on error
+ * @param state new TTS state
+ **/
 void Speaker::StateChanged(QTextToSpeech::State state)
 {
     if (state == QTextToSpeech::Speaking)
@@ -50,6 +61,9 @@ void Speaker::StateChanged(QTextToSpeech::State state)
     }
 }
 
+/*
+ * Starts to speak second sentence
+ **/
 void Speaker::SpeakSecondSentence()
 {
     this->say(this->SecondSentence);
